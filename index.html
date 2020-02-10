@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Тестовое задание</title>
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <script src="scripts/vue.min.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <div>
+      <input type="text" placeholder="Фильтр по логину" v-model="login" />
+      </div>
+      <div>
+      <label>ОТ</label>
+      <input type="number"  v-model="minNumber"/>
+        <label>ДО</label>
+        <input type="number"   v-model="maxNumber"/>
+        </div>
+          <div>
+            <input type="text" placeholder="Фильтр по статусу"  v-model="status"/>
+</div>
+
+
+      <table>
+        <thead>
+          <tr>
+            <th>Место</th>
+            <th>
+              <div class="th">
+                <span>Логин</span>
+                <span>
+    <button v-on:click="deskSortLogin">˄</button>
+                  <button v-on:click="sortLogin">˅</button></span>
+                </div>
+            </th>
+
+            <th>
+              <div class="th">
+              <span>Потвержденные заказы</span>
+              <span>
+                  <button v-on:click="deskSortNumber">˄</button>
+                <button v-on:click="sortNumber">˅</button>
+
+              </span>
+              </div>
+            </th>
+            <th>
+                <div class="th">
+              <span>Статус</span>
+                <span>    <button v-on:click="deskSortStatus">˄</button>
+            <button v-on:click="sortStatus">˅</button></span>
+            </div>
+          </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(val, key) in tbody" :data-key="key" v-if="(login === '' ||  isLogin(val.login)) && isNumber(val.number) && (status === '' || isStatus(val.status))" >
+            <td>{{ (key + 1) }}</td>
+            <td>{{ val.login }}</td>
+            <td>{{ val.number }}</td>
+            <td>{{ val.status }}</td>
+          </tr>
+          <tr v-if="tbody.length === 0">
+            <td  colspan="4">Данных нет</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <script src="scripts/script.js"></script>
+  </body>
+</html>
