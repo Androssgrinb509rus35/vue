@@ -19,16 +19,34 @@
         <input type="number"   v-model="maxNumber"/>
         </div>
           <div>
-            <input type="text" placeholder="Фильтр по статусу"  v-model="status"/>
+    
+            <select v-model="status">
+              <option value="">Выберите статус</option>
+                <option v-for="(val, key) in setSelect" :key="key"  :value="val">{{ val }}</option>
+            </select>
 </div>
 
-
+  <div>
+    <button v-on:click="clearFilter">Сбросить фильтры</button>
+  </div>
       <table>
         <thead>
           <tr>
-            <th>Место</th>
+            <th>
+      <div class="th">
+        <span></span>
+        <span>
+              Место
+            </span>
+            <span>
+              <button v-on:click="sortDesc">˄</button>
+            <button v-on:click="sortAsc">˅</button>
+          </span>
+          </div>
+            </th>
             <th>
               <div class="th">
+                        <span></span>
                 <span>Логин</span>
                 <span>
     <button v-on:click="deskSortLogin">˄</button>
@@ -38,6 +56,7 @@
 
             <th>
               <div class="th">
+                        <span></span>
               <span>Потвержденные заказы</span>
               <span>
                   <button v-on:click="deskSortNumber">˄</button>
@@ -48,6 +67,7 @@
             </th>
             <th>
                 <div class="th">
+                          <span></span>
               <span>Статус</span>
                 <span>    <button v-on:click="deskSortStatus">˄</button>
             <button v-on:click="sortStatus">˅</button></span>
@@ -56,8 +76,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(val, key) in tbody" :data-key="key" v-if="(login === '' ||  isLogin(val.login)) && isNumber(val.number) && (status === '' || isStatus(val.status))" >
-            <td>{{ (key + 1) }}</td>
+          <tr v-for="(val, key) in (reverse === true ? tbody.slice().reverse() : tbody)" :data-key="key" v-if="(login === '' ||  isLogin(val.login)) && isNumber(val.number) && (status === '' || isStatus(val.status))" >
+            <td>{{ (reverse === true ? tbody.length - key : key + 1) }}</td>
             <td>{{ val.login }}</td>
             <td>{{ val.number }}</td>
             <td>{{ val.status }}</td>

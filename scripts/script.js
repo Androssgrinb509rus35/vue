@@ -1,5 +1,4 @@
 
-
 new Vue({
   el: "#app",
   data: {
@@ -15,13 +14,12 @@ new Vue({
     login: "",
     minNumber: 0,
     maxNumber: 10000,
-    status: ""
+    status: "",
+    reverse: false
   },
   methods: {
     isLogin: function(value){
-
-
-      return value.replace(/\@.+/gs, '').toLowerCase().search(new RegExp("^"+this.login.toLowerCase(),'g')) !== -1;
+      return value.toLowerCase().indexOf(this.login.toLowerCase()) !== -1;
     },
     isNumber: function(n){
       return this.minNumber < n && this.maxNumber > n;
@@ -29,6 +27,7 @@ new Vue({
     isStatus: function(st){
         return st.toLowerCase().search(new RegExp("^"+this.status.toLowerCase(),'g')) !== -1 || st.toLowerCase().search(new RegExp(" "+this.status.toLowerCase(),'g')) !== -1;
     },
+
     sortNumber: function(){
       this.tbody =  this.sort(this.tbody, "number");
       this.setUrl("sort", "sortNumber");
@@ -36,6 +35,14 @@ new Vue({
     deskSortNumber: function(){
         this.tbody =  this.sort(this.tbody, "number", true);
         this.setUrl("sort", "deskSortNumber");
+    },
+    sortDesc: function(){
+      this.reverse = true;
+          this.setUrl("sort","sortDesc");
+    },
+    sortAsc: function(){
+      this.reverse = false;
+        this.setUrl("sort","sortAsc");
     },
     sortLogin: function(){
       this.tbody =  this.sort(this.tbody, "login");
@@ -98,6 +105,9 @@ new Vue({
 
   var href = flag === true ? url.href: url.search;
         history.pushState(null, null,href );
+    },
+    clearFilter: function(){
+      window.location = window.location.href.replace(window.location.search, '');
     }
 
   },
@@ -113,7 +123,6 @@ new Vue({
 
    },
    maxNumber:function(val){
-
      this.setUrl("maxNumber");
    }
  },
@@ -140,5 +149,14 @@ new Vue({
         this[url.searchParams.get('sort')]();
      }
 
+ },
+ computed: {
+   setSelect: function(){
+     var n = [];
+     for(var item of this.tbody){
+       n.push(item.status);
+     }
+     return Array.from(new Set(n));
+   }
  }
 });
